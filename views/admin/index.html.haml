@@ -1,0 +1,69 @@
+%h1 Writers
+%table.table.table-bordered.table-striped
+  %thead
+    %tr
+      %th Name
+      %th Last Name
+      %th Email
+      %th Password
+      %th Password
+      %th
+      %th.delet-td
+  %tbody
+    - @admins.try(:each_with_index) do |admin,index|
+      %tr
+        %td #{admin.name}
+        %td #{admin.last_name}
+        %td #{admin.email}
+        %td ************
+        %td ************
+        %td.text-center.editing-td
+          = link_to admin_path(admin),remote: true do
+            %i.fa.fa-eye.edit-admin
+          = link_to edit_admin_path(admin),remote: true do
+            %i.fa.fa-pencil
+        %td.text-center.delet-td
+          %a.fa.fa-trash{"data-target" => "#deleteAdmin_#{index}", "data-toggle" => "modal", :type => "button"}
+          / = render "delete_admin_modal", locales: {admin: admin}
+          = render partial: "delete_admin_modal", locals: {admin: admin,index: index}
+- if current_admin.super_admin?
+  %button.btn.btn-wirte{"data-target" => "#myModal", "data-toggle" => "modal", :type => "button"}
+    Create Writer
+#myModal.modal.fade.in.new-admin-writer{"aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog{:role => "document"}
+    .modal-content
+      .modal-body
+        %h1 Create a new Writer
+        = form_for @admin, url: create_admin_path, class: "form-horizontal" do |f|
+          .field.form-group
+            = f.label :email, class: "col-sm-4 control-label"
+            %br
+            .col-sm-8
+              = f.email_field :email, autofocus: true, class: "form-control"
+          .field.form-group
+            = f.label :name, class: "col-sm-4 control-label"
+            %br
+            .col-sm-8
+              = f.text_field :name, class: "form-control"
+          .field.form-group
+            = f.label :last_name, class: "col-sm-4 control-label"
+            %br
+            .col-sm-8
+              = f.text_field :last_name, class: "form-control"
+          .field.form-group
+            = f.label :password, class: "col-sm-4 control-label"
+            - if @minimum_password_length
+              %em
+                (#{@minimum_password_length} characters minimum)
+            %br
+            .col-sm-8
+              = f.password_field :password, autocomplete: "off", class: "form-control"
+          .field.form-group
+            = f.label :password_confirmation, class: "col-sm-4 control-label"
+            %br
+            .col-sm-8
+              = f.password_field :password_confirmation, autocomplete: "off", class: "form-control"
+          .actions.modal-btn-area
+            = f.submit "Create"
+#viewAdmin.modal.fade.in.new-admin-writer.text-center{"aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+#editAdmin.modal.fade.in.new-admin-writer.text-center{"aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}

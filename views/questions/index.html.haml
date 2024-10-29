@@ -1,0 +1,35 @@
+.question-page
+  %h1
+    Poll Question
+    %a.fa.fa-plus-circle.new-question{"aria-hidden" => "true"}
+    - unless @disable_select.blank?
+      = hidden_field_tag "disable_select",'',id: "disable-select"
+  = render "form"
+  %h1 Created Questions
+  %table.table.table-bordered.table-striped.question-table
+    %thead
+      %tr
+        %th Question
+        %th Category
+        %th Type
+        %th Poll title
+        %th
+        %th.delet-td
+    %tbody
+      - @questions.each do |question|
+        %tr
+          %td #{question.question}
+          %td #{question.try(:category).try(:name)}
+          %td #{question.question_type}
+          %td N/A
+          %td.text-center.editing-td
+            = link_to question_path(question),remote: true do
+              %i.fa.fa-eye
+            = link_to edit_question_path(question),remote: true do
+              %i.fa.fa-pencil
+          %td.text-center.delet-td
+            = link_to question_path(question),method: "delete", :data => {:confirm => 'Are you sure you want to delete this question?'} do
+              %i.fa.fa-trash
+  = will_paginate @questions,class: "pagination-style"
+#viewQuestion.modal.fade.in.text-center{"aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+#editQuestion.modal.fade.in.text-center{"aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}

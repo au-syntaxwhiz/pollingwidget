@@ -1,0 +1,17 @@
+.col-md-2.col-sm-2.col-xs-2
+  .mobile-menu
+    %aside#sidebar
+      %a#showLeft{:href => "#"}
+        %span
+        %span
+        %span
+      %nav#cbp-spmenu-s1.cbp-spmenu.cbp-spmenu-vertical.cbp-spmenu-left.navarea
+        %ul.nav-area
+          %li{ class: "#{active_class('questions','index')}" }
+            = link_to "Questions", questions_path
+          %li{ class: "#{active_class('polls','index')}" }
+            = link_to "Polls", polls_path
+          %li
+            %a{:href => "#"} Widgets
+          %li
+            = link_to "My Account",account_admin_path(current_admin)
